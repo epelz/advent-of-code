@@ -1,0 +1,25 @@
+{
+  "name": "advent-of-code",
+  "scripts": {
+    "fix": "prettier --cache --write '*.md' '.github/**/*.yml' '.vscode/**/*.json' 'challenges/**/*.ts' 'lib/**/*.ts'",
+    "start": "tsx"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/epelz/advent-of-code.git"
+  },
+  "homepage": "https://github.com/epelz/advent-of-code#readme",
+  "dependencies": {
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@tsconfig/node22": "^22.0.0",
+    "@types/node": "^22.9.0",
+    "prettier": "^3.3.3",
+    "tsx": "^4.19.2",
+    "typescript": "^5.6.3"
+  },
+  "prettier": {
+    "tabWidth": 4
+  }
+}
