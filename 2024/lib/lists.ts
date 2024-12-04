@@ -18,7 +18,10 @@ export function findAllIndex<T>(arr: T[], target: T): number[] {
     return indices;
 }
 
-export function findAllIndexMatrix<T>(matrix: T[][], target: T): [number, number][] {
+export function findAllIndexMatrix<T>(
+    matrix: T[][],
+    target: T,
+): [number, number][] {
     const indexes: [number, number][] = [];
     matrix.forEach((row, rowIdx) => {
         const found = findAllIndex(row, target);
@@ -29,7 +32,12 @@ export function findAllIndexMatrix<T>(matrix: T[][], target: T): [number, number
     return indexes;
 }
 
-function get<T>(input: ReadonlyArray<ReadonlyArray<T>>, row: number, col: number, defaultBoundaryCase: T): T {
+function get<T>(
+    input: ReadonlyArray<ReadonlyArray<T>>,
+    row: number,
+    col: number,
+    defaultBoundaryCase: T,
+): T {
     if (row < 0 || row >= input.length) {
         return defaultBoundaryCase;
     }
@@ -39,8 +47,14 @@ function get<T>(input: ReadonlyArray<ReadonlyArray<T>>, row: number, col: number
     return input[row][col];
 }
 
-export type Direction="N"|"E"|"S"|"W"| "NE" | "NW" | "SE" | "SW";
-export function matrixSubsetFromIdx<T>(matrix: T[][], rowIdx: number, colIdx: number, direction: Direction, length: number): T[]|undefined {
+export type Direction = "N" | "E" | "S" | "W" | "NE" | "NW" | "SE" | "SW";
+export function matrixSubsetFromIdx<T>(
+    matrix: T[][],
+    rowIdx: number,
+    colIdx: number,
+    direction: Direction,
+    length: number,
+): T[] | undefined {
     const subset: T[] = [];
     for (let i = 0; i < length; i++) {
         let row = rowIdx;
