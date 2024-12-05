@@ -1,8 +1,5 @@
 import main from "../../lib/main";
-import {
-    CharSchema,
-    MatrixSchema,
-} from "../../lib/schemas";
+import { CharSchema, MatrixSchema } from "../../lib/schemas";
 import {
     findAllIndexMatrix,
     matrixSubsetFromIdx,
