@@ -32,7 +32,7 @@ export function findAllIndexMatrix<T>(
     return indexes;
 }
 
-function get<T>(
+export function safeGetFromMatrix<T>(
     input: ReadonlyArray<ReadonlyArray<T>>,
     row: number,
     col: number,
@@ -71,11 +71,32 @@ export function matrixSubsetFromIdx<T>(
         if (direction.includes("W")) {
             col -= i;
         }
-        const item = get(matrix, row, col, undefined);
+        const item = safeGetFromMatrix(matrix, row, col, undefined);
         if (item === undefined) {
             return undefined;
         }
         subset.push(item);
     }
     return subset;
+}
+
+export function moveCoordinate(
+    [row, col]: [number, number],
+    direction: Direction,
+): [number, number] {
+    let newRow = row;
+    let newCol = col;
+    if (direction.includes("N")) {
+        newRow -= 1;
+    }
+    if (direction.includes("S")) {
+        newRow += 1;
+    }
+    if (direction.includes("E")) {
+        newCol += 1;
+    }
+    if (direction.includes("W")) {
+        newCol -= 1;
+    }
+    return [newRow, newCol];
 }
