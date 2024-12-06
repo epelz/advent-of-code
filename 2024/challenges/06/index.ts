@@ -33,7 +33,7 @@ const GUARD_TO_DIRECTION = {
     ">": "E" as Direction,
 };
 
-const moveGuard = (map: MapSchema, guardLocation: [number, number]): { newMap: MapSchema, newGuardLocation: [number, number], state: "OK"|"OUT_OF_BOUNDS"|"ROTATED" } => {
+const moveGuard = (map: string[][], guardLocation: [number, number]): { newMap: string[][], newGuardLocation: [number, number], state: "OK"|"OUT_OF_BOUNDS"|"ROTATED" } => {
     const [oldGuardX, oldGuardY] = guardLocation;
     const guard = map[oldGuardX][oldGuardY] as Guard;
 
@@ -41,20 +41,17 @@ const moveGuard = (map: MapSchema, guardLocation: [number, number]): { newMap: M
 
     const valueAtNewGuard = safeGetFromMatrix(map, newGuardX, newGuardY, undefined);
     if (valueAtNewGuard === undefined) {
-        const newMap = map.map((row) => row.slice());
-        newMap[oldGuardX][oldGuardY] = "X";
-        return { newMap, newGuardLocation: [-1, -1], state: "OUT_OF_BOUNDS" };    
+        map[oldGuardX][oldGuardY] = "X";
+        return { newMap: map, newGuardLocation: [-1, -1], state: "OUT_OF_BOUNDS" };    
     } else if (valueAtNewGuard === "#") {
         const newGuardSymbol = guard === "^" ? ">" : guard === ">" ? "v" : guard === "v" ? "<" : "^";
-        const newMap = map.map((row) => row.slice());
-        newMap[oldGuardX][oldGuardY] = newGuardSymbol;
-        return { newMap, newGuardLocation: [oldGuardX, oldGuardY], state: "ROTATED" };
+        map[oldGuardX][oldGuardY] = newGuardSymbol;
+        return { newMap: map, newGuardLocation: [oldGuardX, oldGuardY], state: "ROTATED" };
     }
 
-    const newMap = map.map((row) => row.slice());
-    newMap[oldGuardX][oldGuardY] = "X";
-    newMap[newGuardX][newGuardY] = guard;
-    return { newMap, newGuardLocation: [newGuardX, newGuardY], state: "OK" };
+    map[oldGuardX][oldGuardY] = "X";
+    map[newGuardX][newGuardY] = guard;
+    return { newMap: map, newGuardLocation: [newGuardX, newGuardY], state: "OK" };
 }
 
 const prettyPrint = (map: MapSchema): void => {
@@ -66,7 +63,7 @@ const prettyPrint = (map: MapSchema): void => {
 
 const part1 = (map: MapSchema): number => {
     let guardLocation = findGuard(map);
-    let curMap = map;
+    let curMap = map.map(row => row.slice());
 
     // prettyPrint(curMap);
     while (true) {
