@@ -47,13 +47,18 @@ const findTrailEndPositions = (map: Grid, [x, y]: Coordinate): Coordinate[] => {
         moveCoordinate([x, y], "E"),
         moveCoordinate([x, y], "W"),
     ];
-    return uniqTuples(nextCoords
+    // NB: Don't filter unique tuples here, as we want to be able to count total paths.
+    return nextCoords
         .filter(([x, y]) => safeGetFromMatrix(map, x, y, undefined) === height + 1)
-        .flatMap(coord => findTrailEndPositions(map, coord)));
+        .flatMap(coord => findTrailEndPositions(map, coord));
 };
 
 const part1 = ({ map, trailheads }: MapSchema): number => {
+    return sum(trailheads.map((trailhead) => uniqTuples(findTrailEndPositions(map, trailhead)).length));
+};
+
+const part2 = ({ map, trailheads }: MapSchema): number => {
     return sum(trailheads.map((trailhead) => findTrailEndPositions(map, trailhead).length));
 };
 
-main(module, parse, part1);
+main(module, parse, part1, part2);
