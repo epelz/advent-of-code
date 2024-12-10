@@ -80,10 +80,12 @@ export function matrixSubsetFromIdx<T>(
     return subset;
 }
 
+export type Coordinate = [number, number];
+
 export function moveCoordinate(
-    [row, col]: [number, number],
+    [row, col]: Coordinate,
     direction: Direction,
-): [number, number] {
+): Coordinate {
     let newRow = row;
     let newCol = col;
     if (direction.includes("N")) {
@@ -99,4 +101,11 @@ export function moveCoordinate(
         newCol -= 1;
     }
     return [newRow, newCol];
+}
+
+export function uniqCoordinates(coords: Coordinate[]): Coordinate[] {
+    const set = new Set(coords.map(([x, y]) => `${x},${y}`));
+    return Array.from(set).map(
+        (str) => str.split(",").map(Number) as Coordinate,
+    );
 }

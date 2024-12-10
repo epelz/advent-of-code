@@ -1,5 +1,10 @@
 import main from "../../lib/main";
-import { moveCoordinate, safeGetFromMatrix } from "../../lib/lists";
+import {
+    moveCoordinate,
+    safeGetFromMatrix,
+    uniqCoordinates,
+    type Coordinate,
+} from "../../lib/lists";
 import { sum } from "../../lib/math";
 import { CharSchema, MatrixSchema } from "../../lib/schemas";
 
@@ -8,8 +13,6 @@ interface MapSchema {
     trailheads: ReadonlyArray<Coordinate>;
 }
 type Grid = ReadonlyArray<ReadonlyArray<number>>;
-
-type Coordinate = [number, number];
 
 const Schema = MatrixSchema(CharSchema, "").transform((input) => {
     const trailheads: Coordinate[] = [];
@@ -31,11 +34,6 @@ const prettyPrint = (map: Grid): void => {
     console.log();
 };
 
-const uniqTuples = (tuples: Coordinate[]): Coordinate[] => {
-    const set = new Set(tuples.map(([x, y]) => `${x},${y}`));
-    return Array.from(set).map((str) => str.split(",").map(Number) as Coordinate);
-}
-
 const findTrailEndPositions = (map: Grid, [x, y]: Coordinate): Coordinate[] => {
     const height = map[x][y];
 
@@ -49,16 +47,27 @@ const findTrailEndPositions = (map: Grid, [x, y]: Coordinate): Coordinate[] => {
     ];
     // NB: Don't filter unique tuples here, as we want to be able to count total paths.
     return nextCoords
-        .filter(([x, y]) => safeGetFromMatrix(map, x, y, undefined) === height + 1)
-        .flatMap(coord => findTrailEndPositions(map, coord));
+        .filter(
+            ([x, y]) => safeGetFromMatrix(map, x, y, undefined) === height + 1,
+        )
+        .flatMap((coord) => findTrailEndPositions(map, coord));
 };
 
 const part1 = ({ map, trailheads }: MapSchema): number => {
-    return sum(trailheads.map((trailhead) => uniqTuples(findTrailEndPositions(map, trailhead)).length));
+    return sum(
+        trailheads.map(
+            (trailhead) =>
+                uniqCoordinates(findTrailEndPositions(map, trailhead)).length,
+        ),
+    );
 };
 
 const part2 = ({ map, trailheads }: MapSchema): number => {
-    return sum(trailheads.map((trailhead) => findTrailEndPositions(map, trailhead).length));
+    return sum(
+        trailheads.map(
+            (trailhead) => findTrailEndPositions(map, trailhead).length,
+        ),
+    );
 };
 
 main(module, parse, part1, part2);

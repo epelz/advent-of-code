@@ -1,5 +1,5 @@
 import main from "../../lib/main";
-import { safeGetFromMatrix } from "../../lib/lists";
+import { safeGetFromMatrix, type Coordinate } from "../../lib/lists";
 import { CharSchema, MatrixSchema } from "../../lib/schemas";
 
 interface MapSchema {
@@ -9,7 +9,6 @@ interface MapSchema {
 type Grid = ReadonlyArray<ReadonlyArray<string>>;
 
 type Frequency = string;
-type Coordinate = [number, number];
 
 const Schema = MatrixSchema(CharSchema, "").transform((input) => {
     const nodes = new Map<Frequency, Coordinate[]>();
